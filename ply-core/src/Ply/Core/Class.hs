@@ -16,6 +16,7 @@ import Ply.Core.Types (AsData (AsData))
 import PlutusCore (DefaultUni, HasTermLevel, Some, ValueOf)
 import qualified PlutusCore as PLC
 import qualified PlutusTx.AssocMap as PlutusMap
+import qualified PlutusTx.Eq as PlutusEq
 
 import PlutusLedgerApi.V1 as LedgerCommon hiding (
   ScriptContext (..),
@@ -145,6 +146,10 @@ instance
       . PlutusMap.toList
   toBuiltinArgData = Map . toBuiltinArg
 
+instance PlutusEq.Eq ByteString where
+  {-# INLINEABLE (==) #-}
+  (==) = (==)
+
 -- | This instance sorts the 'Value' and removes all zero entries.
 instance PlyArg Value where
   type UPLCRep Value = [(Data, Data)]
@@ -153,7 +158,7 @@ instance PlyArg Value where
       ( \(cs, tkMap) ->
           ( toBuiltinArgData cs
           , toBuiltinArgData
-              . PlutusMap.fromList
+              . PlutusMap.safeFromList
               $ map (bimap toBuiltinArg toBuiltinArg) tkMap
           )
       )

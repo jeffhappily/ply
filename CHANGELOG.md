@@ -1,3 +1,5 @@
+# 0.8.0 - Bump plutus version to 1.30.0.0
+
 # 0.7.0 - Bump plutus version to 1.23.0.0
 
 - Renamed `ValidatorRole` and `MintingPolicyRole` to `ThreeArgumentScript` and `TwoArgumentScript`.
